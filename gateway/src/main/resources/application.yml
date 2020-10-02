@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: car-service # just an id, should end with -service
+          uri: lb://car # the load balancer id, corresponds to application name on eureka
+          predicates:
+            - Path=/car/** # the eureka path, same as application name
+          filters:
+            - RewritePath=/car/(?<path>.*), /$\{path}
+        - id: hotel-service
+          uri: lb://hotel
+          predicates:
+            - Path=/hotel/**
+          filters:
+            - RewritePath=/hotel/(?<path>.*), /$\{path}
+        - id: trip-service
+          uri: lb://trip
+          predicates:
+            - Path=/trip/**
+          filters:
+            - RewritePath=/trip/(?<path>.*), /$\{path}
+        - id: openapi
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs # rewrite open api requests
+
+server:
+  port: 8080
