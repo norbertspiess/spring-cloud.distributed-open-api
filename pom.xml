@@ -20,7 +20,6 @@
     <properties>
         <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
         <spring.cloud.version>Hoxton.SR8</spring.cloud.version>
-        <spring.doc.version>1.4.8</spring.doc.version>
     </properties>
 
     <dependencyManagement>
@@ -39,24 +38,6 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-
-
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-core</artifactId>
-                <version>${spring.doc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-ui</artifactId>
-                <version>${spring.doc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
-                <version>${spring.doc.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -74,7 +55,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
