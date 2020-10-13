@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Primary;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
-import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 @Configuration
@@ -21,21 +19,16 @@ public class SpringfoxConfig {
             DiscoveryClient discoveryClient,
             @Value("${spring.application.name}") String gateway
     ) {
-        return new SwaggerResourcesProvider() {
-            @Override
-            public List<SwaggerResource> get() {
-                return discoveryClient.getServices()
-                        .stream()
-                        .filter(service -> !service.equals(gateway))
-                        .map(service -> {
-                            var resource = new SwaggerResource();
-                            resource.setName(service);
-                            resource.setLocation(String.format("/%s/v3/api-docs", service));
-                            return resource;
-                        })
-                        .collect(toList());
-            }
-        };
+        return () -> discoveryClient.getServices()
+                .stream()
+                .filter(service -> !service.equals(gateway))
+                .map(service -> {
+                    var resource = new SwaggerResource();
+                    resource.setName(service);
+                    resource.setLocation(String.format("/%s/v3/api-docs", service));
+                    return resource;
+                })
+                .collect(toList());
     }
 
 }
