@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +20,12 @@ public class OpenApiConfig {
     public CommandLineRunner openApiGroups(
             RouteDefinitionLocator locator,
             SwaggerUiConfigParameters swaggerUiParameters) {
-        return args -> locator.getRouteDefinitions().collectList().block()
+        return args -> locator
+                .getRouteDefinitions().collectList().block()
                 .stream()
-                .filter(route -> route.getId().matches(".*-service"))
-                .map(route -> route.getId().replace("-service", ""))
+                .map(RouteDefinition::getId)
+                .filter(id -> id.matches(".*-service"))
+                .map(id -> id.replace("-service", ""))
                 .forEach(swaggerUiParameters::addGroup);
     }
 
