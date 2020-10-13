@@ -10,7 +10,7 @@ spring:
         - id: car-service # just an id, should end with -service
           uri: lb://car # the load balancer id, corresponds to application name on eureka
           predicates:
-            - Path=/car/** # the eureka path, same as application name
+            - Path=/car/** # the url path
           filters:
             - RewritePath=/car/(?<path>.*), /$\{path}
         - id: hotel-service
